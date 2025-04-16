@@ -24,9 +24,9 @@ try:
         except Exception:
             try:
                 numfl = float(inp)
-                print("Enter from 0 to 255, not symbol")
+                print("Enter from 0 to 255, not float")
             except Exception:
-                print("Enter from 0 to 255, not float")                
+                print("Enter from 0 to 255, not symbol")                
             continue
 
         if int(inp) < 0:
