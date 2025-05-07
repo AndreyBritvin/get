@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 import time
+import matplotlib.pyplot as plt
 
 #pins selection
 leds = [2, 3, 4, 17, 27, 22, 10, 9]
@@ -98,6 +99,7 @@ def show_num_on_leds(num):
     GPIO.output(dac, bin_num)
 
 voltage_vals = []
+time_vals = []
 
 try:
     exp_start = time.time()
@@ -110,12 +112,14 @@ try:
         troyka_signal = adc()
         # print(troyka_signal, task_max_val)
         voltage_vals.append(troyka_signal)
+        time_vals.append(time.time()-exp_start)
 
     GPIO.output(troyka, 0)
-    while(troyka_signal > 193):
+    while(troyka_signal > 192):
         troyka_signal = adc()
         # print(troyka_signal, task_min_val, time.time())
         voltage_vals.append(troyka_signal)
+        time_vals.append(time.time()-exp_start)
 
     exp_end = time.time()
     exp_duration = exp_end - exp_start        
@@ -141,3 +145,6 @@ print("| Period:", exp_duration / len(voltage_vals), "s")
 print("| Frequency:", len(voltage_vals) / exp_duration, "Hz")
 print("| Quantization shift:", cap_max_val / 256, "V")
 print("\-----------------------------------------------------------------/")
+
+plt.plot(time_vals, voltage_vals)
+plt.show()
